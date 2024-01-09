@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Event-Plattform</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #333;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #444;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        h1, h2 {
+            color: #f90;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #f90;
+            color: #333;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Event-Plattform</h1>
+
+        <div id="loginSection">
+            <label for="userType">Ich bin:</label>
+            <select id="userType" onchange="toggleLogin()">
+                <option value="veranstalter">Veranstalter</option>
+                <option value="haendler">Händler</option>
+            </select>
+
+            <label for="loginUsername">Benutzername:</label>
+            <input type="text" id="loginUsername" required>
+
+            <label for="loginPassword">Passwort:</label>
+            <input type="password" id="loginPassword" required>
+
+            <button type="button" onclick="login()">Anmelden</button>
+        </div>
+
+        <div id="eventSection" style="display: none;">
+            <h2>Verfügbare Events</h2>
+            <select id="availableEvents" onchange="toggleBidSection()">
+                <!-- Hier sollten dynamisch Events geladen werden -->
+                <option value="event1">Event 1</option>
+                <option value="event2">Event 2</option>
+            </select>
+
+            <div id="bidSection" style="display: none;">
+                <label for="bidAmount">Gebot (in Euro):</label>
+                <input type="number" id="bidAmount" step="0.01">
+                <button type="button" onclick="placeBid()">Bieten</button>
+            </div>
+        </div>
+
+        <div id="createEventSection" style="display: none;">
+            <h2>Event erstellen</h2>
+            <label for="eventName">Eventname:</label>
+            <input type="text" id="eventName" required>
+
+            <button type="button" onclick="createEvent()">Event erstellen</button>
+        </div>
+    </div>
+
+    <script>
+        function toggleLogin() {
+            var userType = document.getElementById('userType').value;
+            var loginSection = document.getElementById('loginSection');
+            var eventSection = document.getElementById('eventSection');
+            var createEventSection = document.getElementById('createEventSection');
+
+            if (userType === 'veranstalter') {
+                loginSection.style.display = 'none';
+                eventSection.style.display = 'none';
+                createEventSection.style.display = 'block';
+            } else {
+                loginSection.style.display = 'block';
+                eventSection.style.display = 'none';
+                createEventSection.style.display = 'none';
+            }
+        }
+
+        function toggleBidSection() {
+            var userType = document.getElementById('userType').value;
+            var availableEvents = document.getElementById('availableEvents');
+            var bidSection = document.getElementById('bidSection');
+
+            if (userType === 'haendler' && availableEvents.value !== '') {
+                bidSection.style.display = 'block';
+            } else {
+                bidSection.style.display = 'none';
+            }
+        }
+
+        function login() {
+            var userType = document.getElementById('userType').value;
+            var loginUsername = document.getElementById('loginUsername').value;
+            var loginPassword = document.getElementById('loginPassword').value;
+
+            // Hier sollte die Überprüfung der Anmeldeinformationen erfolgen
+            // Für dieses Beispiel wird einfach die Benutzerrolle gesetzt
+            if (userType === 'veranstalter') {
+                toggleLogin();
+            } else {
+                // Hier sollte die Logik zur Anzeige der verfügbaren Events erfolgen
+                toggleLogin();
+                document.getElementById('eventSection').style.display = 'block';
+            }
+        }
+
+        function placeBid() {
+            var bidAmount = document.getElementById('bidAmount').value;
+            var selectedEvent = document.getElementById('availableEvents').value;
+
+            // Hier sollte die Logik zur Platzierung des Gebots erfolgen
+            console.log('Gebot für Event', selectedEvent, 'in Höhe von', bidAmount, 'Euro platziert.');
+        }
+
+        function createEvent() {
+            var eventName = document.getElementById('eventName').value;
+
+            // Hier sollte die Logik zur Erstellung des Events erfolgen
+            console.log('Event erstellt mit dem Namen:', eventName);
+        }
+    </script>
+</body>
+</html>
